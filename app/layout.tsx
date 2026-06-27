@@ -26,7 +26,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en">
       <body className={inter.className}>
-        <div className="min-h-screen bg-sky-50 text-gray-900">
+        <div className="min-h-screen overflow-x-hidden overflow-y-visible bg-sky-50 text-gray-900">
           <Navbar />
           {children}
           <Footer />

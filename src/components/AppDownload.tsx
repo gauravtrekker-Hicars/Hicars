@@ -78,7 +78,7 @@ export default function AppDownload() {
 
             {/* Phone Mock */}
             <div className="section-reveal flex justify-center lg:justify-end" style={{ transitionDelay: '150ms' }}>
-              <div className="relative animate-float">
+              <div className="relative hero-float">
                 <div className="w-56 h-[420px] bg-gray-900 rounded-[2.5rem] border-4 border-white/20 shadow-2xl flex flex-col overflow-hidden">
                   {/* Screen */}
                   <div className="bg-sky-600 h-32 flex items-end pb-4 px-5">

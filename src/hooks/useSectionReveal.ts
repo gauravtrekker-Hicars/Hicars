@@ -11,20 +11,9 @@ export function useSectionReveal(ref: RefObject<HTMLElement | null>) {
       return undefined;
     }
 
-    let observer: IntersectionObserver | undefined;
-    const timeoutId = window.setTimeout(() => {
-      observer = new IntersectionObserver(
-        (entries) => entries.forEach((entry) => entry.target.classList.toggle('visible', entry.isIntersecting)),
-        { threshold: 0.1 }
-      );
+    const elements = [root, ...Array.from(root.querySelectorAll<HTMLElement>('.section-reveal'))];
+    elements.forEach((el) => el.classList.add('visible'));
 
-      const elements = [root, ...Array.from(root.querySelectorAll<HTMLElement>('.section-reveal'))];
-      elements.forEach((el) => observer?.observe(el));
-    }, 150);
-
-    return () => {
-      window.clearTimeout(timeoutId);
-      observer?.disconnect();
-    };
+    return undefined;
   }, [ref]);
 }

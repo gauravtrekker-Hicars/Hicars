@@ -137,7 +137,7 @@ export default function Hero() {
           </div>
 
           <div className="flex justify-center items-center mt-2 lg:mt-8 animate-slide-in-right" style={{ animationDelay: '250ms' }}>
-            <div className="relative rounded-[2rem] overflow-hidden shadow-[0_24px_90px_rgba(15,23,42,0.24)] h-72 sm:h-80 lg:h-96 w-full max-w-2xl border border-white/20 hero-shell animate-float">
+            <div className="relative rounded-[2rem] overflow-hidden shadow-[0_24px_90px_rgba(15,23,42,0.24)] h-72 sm:h-80 lg:h-96 w-full max-w-2xl border border-white/20 hero-shell">
               <div className="absolute inset-0 bg-gradient-to-br from-slate-950/20 via-slate-900/10 to-blue-500/20 z-10" />
               <img
                 key={bannerImages[activeBannerIndex]}

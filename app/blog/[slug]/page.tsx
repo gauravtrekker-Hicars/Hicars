@@ -61,16 +61,17 @@ export default function BlogDetailPage() {
   return (
     <main className="min-h-screen bg-amber-50 pt-24 pb-16 text-gray-900">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-        <button type="button" onClick={handleBackToBlog} className="inline-flex mb-8 text-sm font-semibold text-amber-700 hover:text-amber-800">
+        <button type="button" onClick={handleBackToBlog} className="inline-flex mb-6 text-sm font-semibold text-amber-700 hover:text-amber-800">
           Back to Blog
         </button>
 
         <article className="overflow-hidden rounded-[2rem] bg-white border border-amber-100 shadow-sm">
-          <div className="min-h-[320px] bg-amber-50 relative">
+          <div className="relative h-64 sm:h-72 md:h-[380px] lg:h-[440px] bg-amber-50">
             <Image
               src={getBlogImage(post)}
               alt={post.title}
               fill
+              sizes="(max-width: 640px) 100vw, (max-width: 1024px) 80vw, 60vw"
               className="object-cover"
               unoptimized
             />

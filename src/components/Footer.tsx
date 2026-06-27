@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { usePathname } from 'next/navigation';
 import { X, MapPin, Phone, Mail, Instagram, Twitter, Facebook, Youtube, Smartphone } from 'lucide-react';
 import AuthModal from './AuthModal';
 
@@ -38,16 +39,30 @@ const cities = [
 ];
 
 export default function Footer() {
+  const pathname = usePathname();
   const [setAlertPromptOpen, setSetAlertPromptOpen] = useState(false);
   const [authOpen, setAuthOpen] = useState(false);
   const [authMode, setAuthMode] = useState<'login' | 'signup'>('login');
 
+  const handleLogoClick = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    if (pathname === '/') {
+      event.preventDefault();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  };
+
   useEffect(() => {
     const anyOpen = authOpen || setAlertPromptOpen;
     if (!anyOpen) return;
+
+    const previousBodyOverflow = document.body.style.overflow;
+    const previousHtmlOverflow = document.documentElement.style.overflow;
     document.body.style.overflow = 'hidden';
+    document.documentElement.style.overflow = 'hidden';
+
     return () => {
-      document.body.style.overflow = '';
+      document.body.style.overflow = previousBodyOverflow;
+      document.documentElement.style.overflow = previousHtmlOverflow;
     };
   }, [authOpen, setAlertPromptOpen]);
 
@@ -88,7 +103,7 @@ export default function Footer() {
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-10">
           {/* Brand */}
           <div className="col-span-2 md:col-span-3 lg:col-span-1 text-center lg:text-left">
-            <Link href="/" className="flex items-center justify-center lg:justify-start mb-5 cursor-pointer">
+            <Link href="/" onClick={handleLogoClick} className="flex items-center justify-center lg:justify-start mb-5 cursor-pointer">
               <img
                 src="/logo4.png"
                 alt="HIcars logo"
@@ -180,30 +195,30 @@ export default function Footer() {
             className="absolute inset-0 bg-black/70 backdrop-blur-sm"
             onClick={() => setSetAlertPromptOpen(false)}
           />
-          <div className="relative w-full max-w-sm sm:max-w-md lg:max-w-lg rounded-[2rem] bg-slate-950/95 border border-white/10 p-6 sm:p-8 shadow-[0_30px_80px_rgba(0,0,0,0.5)]">
+          <div className="relative w-full max-w-sm sm:max-w-md lg:max-w-lg rounded-[2rem] bg-slate-950/95 border border-white/10 p-5 sm:p-6 shadow-[0_30px_80px_rgba(0,0,0,0.5)] max-h-[calc(100vh-2rem)] overflow-y-auto">
             <button
               type="button"
               onClick={() => setSetAlertPromptOpen(false)}
-              className="absolute right-4 top-4 p-2 rounded-full text-slate-300 hover:bg-white/10 transition-colors"
+              className="absolute right-3 top-3 p-2 rounded-full text-slate-300 hover:bg-white/10 transition-colors"
             >
-              <X size={20} />
+              <X size={18} />
             </button>
-            <h2 className="text-2xl sm:text-3xl font-black text-white mb-3">Log in to Set Alert</h2>
-            <p className="text-sm sm:text-base text-slate-300 mb-8 leading-relaxed">
+            <h2 className="text-xl sm:text-2xl font-black text-white mb-2">Log in to Set Alert</h2>
+            <p className="text-sm sm:text-base text-slate-300 mb-6 leading-snug">
               You need a HIcars account to receive real-time ride notifications and updates.
             </p>
             <div className="space-y-3">
               <button
                 type="button"
                 onClick={() => openAuth('login')}
-                className="w-full rounded-2xl border border-transparent bg-sky-600 px-5 py-3.5 text-sm font-semibold text-white hover:bg-sky-700 transition-all duration-300"
+                className="w-full rounded-2xl border border-transparent bg-sky-600 px-5 py-3.5 text-sm sm:text-base font-semibold text-white hover:bg-sky-700 transition-all duration-300"
               >
                 Login
               </button>
               <button
                 type="button"
                 onClick={() => openAuth('signup')}
-                className="w-full rounded-2xl border border-white/20 bg-white px-5 py-3.5 text-sm font-semibold text-slate-950 hover:bg-slate-100 transition-all duration-300"
+                className="w-full rounded-2xl border border-white/20 bg-white px-5 py-3.5 text-sm sm:text-base font-semibold text-slate-950 hover:bg-slate-100 transition-all duration-300"
               >
                 Sign up
               </button>

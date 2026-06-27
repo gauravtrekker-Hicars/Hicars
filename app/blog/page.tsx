@@ -37,18 +37,19 @@ export default function BlogPage() {
           <p className="text-gray-500 max-w-2xl mx-auto">{blogIntro}</p>
         </div>
 
-        <div className="grid gap-6 md:grid-cols-3 auto-rows-fr">
+        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 auto-rows-fr">
           {posts.map((post) => (
             <Link
               key={post.title}
               href={`/blog/${slugifyBlogTitle(post.title)}`}
-              className="group flex h-full flex-col overflow-hidden rounded-[2rem] bg-white p-6 text-gray-900 shadow-sm border border-sky-100 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
+              className="group flex h-full flex-col overflow-hidden rounded-[2rem] bg-white p-4 sm:p-6 text-gray-900 shadow-sm border border-sky-100 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
             >
-              <div className="mb-4 overflow-hidden rounded-2xl relative h-44">
+              <div className="mb-4 overflow-hidden rounded-2xl relative h-44 sm:h-52 md:h-56">
                 <Image
                   src={getBlogImage(post)}
                   alt={post.title}
                   fill
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
                   className="object-cover transition-transform duration-300 group-hover:scale-105"
                   unoptimized
                 />

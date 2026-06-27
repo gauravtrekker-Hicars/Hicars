@@ -64,7 +64,7 @@ export default function Testimonials() {
 
     const intervalId = window.setInterval(() => {
       setActiveIndex((current) => current + 1);
-    }, 3500);
+    }, 8000);
 
     return () => window.clearInterval(intervalId);
   }, [testimonials.length]);
@@ -101,7 +101,7 @@ export default function Testimonials() {
 
         <div className="overflow-hidden">
           <div
-            className={`flex gap-6 ${isTransitionEnabled ? 'transition-transform duration-700 ease-out' : ''}`}
+            className={`flex gap-6 ${isTransitionEnabled ? 'transition-transform duration-500 ease-out' : ''}`}
             style={{ transform: trackTranslate }}
             onTransitionEnd={handleTrackTransitionEnd}
           >

@@ -71,12 +71,20 @@ export default function Careers() {
 
     if (resumeOpen) {
       window.addEventListener('keydown', onKeyDown);
+      const previousBodyOverflow = document.body.style.overflow;
+      const previousHtmlOverflow = document.documentElement.style.overflow;
       document.body.style.overflow = 'hidden';
+      document.documentElement.style.overflow = 'hidden';
+
+      return () => {
+        window.removeEventListener('keydown', onKeyDown);
+        document.body.style.overflow = previousBodyOverflow;
+        document.documentElement.style.overflow = previousHtmlOverflow;
+      };
     }
 
     return () => {
       window.removeEventListener('keydown', onKeyDown);
-      document.body.style.overflow = '';
     };
   }, [resumeOpen]);
 
@@ -250,7 +258,7 @@ export default function Careers() {
 
       {resumeOpen && (
         <div className="fixed inset-0 z-[100] flex items-start justify-center overflow-y-auto bg-black/90 px-3 py-4 sm:items-center sm:px-6" onClick={closeResumePopup}>
-          <div className="relative w-full max-w-md overflow-hidden rounded-[2rem] border border-white/15 bg-slate-950 text-white shadow-2xl sm:max-w-2xl max-h-[calc(100vh-3rem)] flex min-h-0 flex-col" onClick={(event) => event.stopPropagation()}>
+          <div className="relative w-full max-w-xl overflow-hidden rounded-[2rem] border border-white/15 bg-slate-950 text-white shadow-2xl sm:max-w-2xl max-h-[calc(100vh-2rem)] sm:max-h-[calc(100vh-3rem)] flex min-h-0 flex-col" onClick={(event) => event.stopPropagation()}>
             <div className="hidden md:block absolute -top-24 right-[-4rem] h-56 w-56 rounded-full bg-amber-400/15 blur-3xl" />
             <div className="hidden md:block absolute -bottom-24 left-[-4rem] h-56 w-56 rounded-full bg-blue-500/10 blur-3xl" />
 
@@ -273,7 +281,7 @@ export default function Careers() {
                   Submit your resume
                 </div>
                 <h3 className="text-lg sm:text-xl font-black text-white">Tell us about yourself and attach your resume</h3>
-                <p className="mt-2 text-sm text-gray-300">
+                <p className="mt-2 text-sm sm:text-base text-gray-300">
                   Cannot see the role you are searching for? Share your details below and our HR team will review your profile for future opportunities.
                 </p>
               </div>
@@ -283,10 +291,10 @@ export default function Careers() {
               {resumeSubmitted ? (
                 <div className="rounded-[1.5rem] border border-emerald-400/20 bg-emerald-400/10 p-6 text-center">
                   <p className="text-lg font-black text-white mb-2">Resume submitted</p>
-                  <p className="text-sm text-gray-300">
+                  <p className="text-sm sm:text-base text-gray-300">
                     Thanks for reaching out. Our HR team will review your resume and contact you if there is a suitable opportunity.
                   </p>
-                  <button type="button" onClick={closeResumePopup} className="btn-blue mt-6 px-6 py-3 text-white font-bold rounded-xl text-sm">
+                  <button type="button" onClick={closeResumePopup} className="btn-blue mt-6 px-5 sm:px-6 py-3 text-white font-bold rounded-xl text-sm sm:text-base">
                     Close
                   </button>
                 </div>
@@ -294,53 +302,53 @@ export default function Careers() {
                 <form id="resume-form" onSubmit={handleResumeSubmit} className="grid gap-4">
                   <div className="grid gap-4 md:grid-cols-2">
                     <div>
-                      <label htmlFor="resume-name" className="block text-sm font-semibold text-gray-200 mb-2">Name</label>
+                      <label htmlFor="resume-name" className="block text-sm sm:text-base font-semibold text-gray-200 mb-2">Name</label>
                       <input
                         id="resume-name"
                         type="text"
                         required
                         value={resumeForm.name}
                         onChange={(event) => setResumeForm((current) => ({ ...current, name: event.target.value }))}
-                        className="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none transition-colors focus:border-amber-400"
+                        className="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm sm:text-base text-white outline-none transition-colors focus:border-amber-400"
                         placeholder="Your full name"
                       />
                     </div>
                     <div>
-                      <label htmlFor="resume-email" className="block text-sm font-semibold text-gray-200 mb-2">Mail ID</label>
+                      <label htmlFor="resume-email" className="block text-sm sm:text-base font-semibold text-gray-200 mb-2">Mail ID</label>
                       <input
                         id="resume-email"
                         type="email"
                         required
                         value={resumeForm.email}
                         onChange={(event) => setResumeForm((current) => ({ ...current, email: event.target.value }))}
-                        className="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none transition-colors focus:border-amber-400"
+                        className="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm sm:text-base text-white outline-none transition-colors focus:border-amber-400"
                         placeholder="you@example.com"
                       />
                     </div>
                   </div>
 
                   <div>
-                    <label htmlFor="resume-file" className="block text-sm font-semibold text-gray-200 mb-2">Attach resume</label>
+                    <label htmlFor="resume-file" className="block text-sm sm:text-base font-semibold text-gray-200 mb-2">Attach resume</label>
                     <input
                       id="resume-file"
                       type="file"
                       required
                       accept=".pdf,.doc,.docx"
                       onChange={(event) => setResumeForm((current) => ({ ...current, resumeFile: event.target.files?.[0] || null }))}
-                      className="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-gray-200 file:mr-4 file:rounded-xl file:border-0 file:bg-amber-400 file:px-4 file:py-2 file:text-sm file:font-bold file:text-gray-900"
+                      className="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm sm:text-base text-gray-200 file:mr-4 file:rounded-xl file:border-0 file:bg-amber-400 file:px-4 file:py-2 file:text-sm file:font-bold file:text-gray-900"
                     />
-                    <p className="mt-2 text-xs text-gray-400">Accepted formats: PDF, DOC, DOCX.</p>
+                    <p className="mt-2 text-xs sm:text-sm text-gray-400">Accepted formats: PDF, DOC, DOCX.</p>
                   </div>
 
                   <div>
-                    <label htmlFor="resume-message" className="block text-sm font-semibold text-gray-200 mb-2">Message for HR</label>
+                    <label htmlFor="resume-message" className="block text-sm sm:text-base font-semibold text-gray-200 mb-2">Message for HR</label>
                     <textarea
                       id="resume-message"
                       rows={5}
                       required
                       value={resumeForm.message}
                       onChange={(event) => setResumeForm((current) => ({ ...current, message: event.target.value }))}
-                      className="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-white outline-none transition-colors focus:border-amber-400"
+                      className="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm sm:text-base text-white outline-none transition-colors focus:border-amber-400"
                       placeholder="Share a brief note about the role or skills you are interested in."
                     />
                   </div>
@@ -351,12 +359,12 @@ export default function Careers() {
             {!resumeSubmitted && (
               <div className="border-t border-white/10 bg-slate-950/95 p-4 sm:p-5">
                 <div className="flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between">
-                  <p className="text-xs text-gray-400">Your details help our HR team review your profile for future openings.</p>
+                  <p className="text-xs sm:text-sm text-gray-400">Your details help our HR team review your profile for future openings.</p>
                   <button
                     type="submit"
                     form="resume-form"
                     disabled={!isResumeFormComplete}
-                    className="btn-yellow px-6 py-3.5 text-gray-900 font-bold rounded-xl text-sm disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:transform-none"
+                    className="btn-yellow px-5 sm:px-6 py-3.5 text-sm sm:text-base text-gray-900 font-bold rounded-xl disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:transform-none"
                   >
                     Submit Resume
                   </button>
