@@ -41,7 +41,7 @@ export default function HowItWorks() {
             How <span className="gradient-text">HIcars</span> Works
           </h2>
           <p className="text-base sm:text-lg text-gray-500 max-w-xl mx-auto">
-            Whether you're a passenger or a driver, getting started takes less than 2 minutes.
+            Whether you&apos;re a passenger or a driver, getting started takes less than 2 minutes.
           </p>
         </div>
 

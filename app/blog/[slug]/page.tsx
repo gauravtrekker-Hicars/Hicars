@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
+import Image from 'next/image';
 import { useParams, useRouter } from 'next/navigation';
 import { BLOG_STORAGE_KEY, defaultBlogPosts, type BlogPostItem } from '../../../src/data/blog';
 import { getBlogImage, slugifyBlogTitle } from '../../../src/data/blog';
@@ -65,8 +66,14 @@ export default function BlogDetailPage() {
         </button>
 
         <article className="overflow-hidden rounded-[2rem] bg-white border border-amber-100 shadow-sm">
-          <div className="min-h-[320px] bg-amber-50">
-            <img src={getBlogImage(post)} alt={post.title} className="h-full w-full object-cover" />
+          <div className="min-h-[320px] bg-amber-50 relative">
+            <Image
+              src={getBlogImage(post)}
+              alt={post.title}
+              fill
+              className="object-cover"
+              unoptimized
+            />
           </div>
 
           <div className="p-6 sm:p-10 lg:p-12">

@@ -129,7 +129,7 @@ export default function AuthModal({ isOpen, mode, onClose }: AuthModalProps) {
             </div>
             <h3 className="text-lg font-black text-gray-900 mb-2">Check Your Phone</h3>
             <p className="text-sm text-gray-500 mb-6">
-              We've sent a verification code to <span className="font-semibold text-gray-700">{phoneNumber}</span>
+              We&apos;ve sent a verification code to <span className="font-semibold text-gray-700">{phoneNumber}</span>
             </p>
             <input
               type="text"

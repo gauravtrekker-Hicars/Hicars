@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { getBlogImage, loadStoredBlogPosts, slugifyBlogTitle, type BlogPostItem } from '../../src/data/blog';
 import { subscribeLiveUpdate } from '../../src/lib/liveUpdates';
@@ -43,8 +44,14 @@ export default function BlogPage() {
               href={`/blog/${slugifyBlogTitle(post.title)}`}
               className="group flex h-full flex-col overflow-hidden rounded-[2rem] bg-white p-6 text-gray-900 shadow-sm border border-sky-100 transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
             >
-              <div className="mb-4 overflow-hidden rounded-2xl">
-                <img src={getBlogImage(post)} alt={post.title} className="h-44 w-full object-cover transition-transform duration-300 group-hover:scale-105" />
+              <div className="mb-4 overflow-hidden rounded-2xl relative h-44">
+                <Image
+                  src={getBlogImage(post)}
+                  alt={post.title}
+                  fill
+                  className="object-cover transition-transform duration-300 group-hover:scale-105"
+                  unoptimized
+                />
               </div>
               <div className="flex items-center justify-between mb-4 text-xs font-bold uppercase tracking-widest text-sky-600">
                 <span>{post.category}</span>

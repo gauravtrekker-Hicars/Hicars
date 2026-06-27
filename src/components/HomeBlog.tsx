@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowRight, Newspaper } from 'lucide-react';
 import { getBlogImage, loadStoredBlogPosts, slugifyBlogTitle, type BlogPostItem, defaultBlogPosts } from '../data/blog';
@@ -57,11 +58,13 @@ export default function HomeBlog() {
               href={`/blog/${slugifyBlogTitle(post.title)}`}
               className="group overflow-hidden rounded-[2rem] bg-white border border-sky-200 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-xl"
             >
-              <div className="overflow-hidden bg-sky-50">
-                <img
+              <div className="overflow-hidden bg-sky-50 relative h-48">
+                <Image
                   src={getBlogImage(post)}
                   alt={post.title}
-                  className="h-48 w-full object-cover transition-transform duration-300 group-hover:scale-105"
+                  fill
+                  className="object-cover transition-transform duration-300 group-hover:scale-105"
+                  unoptimized
                 />
               </div>
               <div className="p-6">

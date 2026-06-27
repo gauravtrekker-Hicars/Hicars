@@ -1,21 +1,14 @@
 "use client";
 
-import { useState, useEffect } from 'react';
-import { Menu, X, Car } from 'lucide-react';
+import { useState } from 'react';
+import { Menu, X } from 'lucide-react';
 import Link from 'next/link';
 import AuthModal from './AuthModal';
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
   const [authOpen, setAuthOpen] = useState(false);
   const [authMode, setAuthMode] = useState<'login' | 'signup'>('login');
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 60);
-    window.addEventListener('scroll', onScroll);
-    return () => window.removeEventListener('scroll', onScroll);
-  }, []);
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-black shadow-md py-1.5 transition-all duration-300">

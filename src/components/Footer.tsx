@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
-import { X, Car, MapPin, Phone, Mail, Instagram, Twitter, Facebook, Youtube, Smartphone } from 'lucide-react';
+import { X, MapPin, Phone, Mail, Instagram, Twitter, Facebook, Youtube, Smartphone } from 'lucide-react';
 
 const footerLinks = {
   Company: [
@@ -93,7 +93,7 @@ export default function Footer() {
               />
             </Link>
             <p className="mx-auto lg:mx-0 text-sm leading-relaxed text-gray-500 mb-6 max-w-xs">
-              India's most trusted carpooling platform. Connecting millions of travellers across the country — safely, affordably, and sustainably.
+              India&apos;s most trusted carpooling platform. Connecting millions of travellers across the country — safely, affordably, and sustainably.
             </p>
             <div className="flex gap-3">
               {[Instagram, Twitter, Facebook, Youtube].map((Icon, i) => (

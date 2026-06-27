@@ -57,7 +57,7 @@ export default function Features() {
             Only on <span className="gradient-text">HIcars...</span>
           </h2>
           <p className="text-base sm:text-lg text-gray-500 max-w-xl mx-auto">
-            We've built the most trusted carpooling network across India, so every ride feels safe, fair, and memorable.
+            We&apos;ve built the most trusted carpooling network across India, so every ride feels safe, fair, and memorable.
           </p>
         </div>
 

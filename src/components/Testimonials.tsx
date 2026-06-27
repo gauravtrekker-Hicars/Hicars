@@ -118,7 +118,7 @@ export default function Testimonials() {
                   </div>
                   <Quote size={18} className="text-sky-300" />
                 </div>
-                <p className="text-sm text-gray-700 leading-relaxed mb-5 italic">"{t.text}"</p>
+                <p className="text-sm text-gray-700 leading-relaxed mb-5 italic">&ldquo;{t.text}&rdquo;</p>
                 <div className="flex items-center gap-3 border-t border-sky-100 pt-4">
                   <img
                     src={t.avatar}

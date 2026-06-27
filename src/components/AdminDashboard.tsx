@@ -351,7 +351,7 @@ export default function AdminDashboard() {
                   </div>
                   <span className="text-xs font-semibold text-amber-700">{testimonialPreview.city}</span>
                 </div>
-                <p className="text-sm text-gray-700 leading-relaxed mb-5 italic">"{testimonialPreview.text}"</p>
+                <p className="text-sm text-gray-700 leading-relaxed mb-5 italic">&ldquo;{testimonialPreview.text}&rdquo;</p>
                 <div className="flex items-center gap-3 border-t border-amber-100 pt-4">
                   <img src={testimonialPreview.avatar} alt={testimonialPreview.name} className="w-10 h-10 rounded-full object-cover ring-2 ring-amber-200" />
                   <div>
