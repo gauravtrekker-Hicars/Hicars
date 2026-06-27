@@ -32,6 +32,7 @@ export default function Hero() {
   const fromContainerRef = useRef<HTMLDivElement | null>(null);
   const toContainerRef = useRef<HTMLDivElement | null>(null);
   const dateInputRef = useRef<HTMLInputElement | null>(null);
+  const heroSearchRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -115,6 +116,22 @@ export default function Hero() {
     }
   };
 
+  const scrollToSection = (sectionId: string) => {
+    const target = document.getElementById(sectionId);
+    if (target) {
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+  };
+
+  const handleTypeSelect = (type: 'find' | 'share') => {
+    setTripType(type);
+    if (heroSearchRef.current) {
+      heroSearchRef.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    } else {
+      scrollToSection('find-a-ride');
+    }
+  };
+
   return (
     <section className="bg-white py-8 sm:py-12 lg:py-20 pt-24 sm:pt-28 lg:pt-32 overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -157,7 +174,7 @@ export default function Hero() {
             <button
               key={type}
               type="button"
-              onClick={() => setTripType(type)}
+              onClick={() => handleTypeSelect(type)}
               className={`py-3 sm:py-4 px-6 sm:px-8 text-sm sm:text-base font-bold rounded-xl transition-all whitespace-nowrap ${
                 tripType === type
                   ? 'bg-gradient-to-r from-blue-600 via-sky-500 to-cyan-400 text-white shadow-[0_12px_35px_rgba(37,99,235,0.25)] hover:shadow-[0_16px_45px_rgba(37,99,235,0.3)]'
@@ -170,6 +187,7 @@ export default function Hero() {
         </div>
 
         <div
+          ref={heroSearchRef}
           className="bg-white rounded-lg sm:rounded-2xl border-2 border-sky-500 p-4 sm:p-6 shadow-lg animate-fade-in"
           style={{ animationDelay: '350ms' }}
         >
