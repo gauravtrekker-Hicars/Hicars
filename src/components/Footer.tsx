@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { X, MapPin, Phone, Mail, Instagram, Twitter, Facebook, Youtube, Smartphone } from 'lucide-react';
+import AuthModal from './AuthModal';
 
 const footerLinks = {
   Company: [
@@ -15,7 +16,6 @@ const footerLinks = {
     { label: 'Share a Ride', href: '/share-a-ride' },
     { label: 'Price Guide', href: '/price-guide' },
     { label: 'Popular Routes', href: '/#find-a-ride' },
-    { label: 'Ride Alerts', href: '#' },
   ],
   Support: [
     { label: 'Help Centre', href: '/help-center' },
@@ -38,25 +38,28 @@ const cities = [
 ];
 
 export default function Footer() {
-  const [downloadOpen, setDownloadOpen] = useState(false);
+  const [setAlertPromptOpen, setSetAlertPromptOpen] = useState(false);
+  const [authOpen, setAuthOpen] = useState(false);
+  const [authMode, setAuthMode] = useState<'login' | 'signup'>('login');
 
   useEffect(() => {
-    const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') {
-        setDownloadOpen(false);
-      }
-    };
-
-    if (downloadOpen) {
-      window.addEventListener('keydown', onKeyDown);
-      document.body.style.overflow = 'hidden';
-    }
-
+    const anyOpen = authOpen || setAlertPromptOpen;
+    if (!anyOpen) return;
+    document.body.style.overflow = 'hidden';
     return () => {
-      window.removeEventListener('keydown', onKeyDown);
       document.body.style.overflow = '';
     };
-  }, [downloadOpen]);
+  }, [authOpen, setAlertPromptOpen]);
+
+  const openSetAlertPrompt = () => {
+    setSetAlertPromptOpen(true);
+  };
+
+  const openAuth = (mode: 'login' | 'signup') => {
+    setAuthMode(mode);
+    setAuthOpen(true);
+    setSetAlertPromptOpen(false);
+  };
 
   return (
     <>
@@ -71,7 +74,7 @@ export default function Footer() {
             </div>
             <button
               type="button"
-              onClick={() => setDownloadOpen(true)}
+              onClick={openSetAlertPrompt}
               className="flex-shrink-0 btn-blue px-8 py-3.5 text-white font-bold rounded-xl text-sm"
             >
               Set Ride Alert
@@ -115,15 +118,7 @@ export default function Footer() {
               <ul className="space-y-2.5">
                 {links.map((link) => (
                   <li key={link.label}>
-                    {link.label === 'Ride Alerts' ? (
-                      <button
-                        type="button"
-                        onClick={() => setDownloadOpen(true)}
-                        className="text-sm text-gray-500 hover:text-sky-300 transition-colors duration-200 text-left"
-                      >
-                        {link.label}
-                      </button>
-                    ) : link.href.startsWith('/') ? (
+                    {link.href.startsWith('/') ? (
                       <Link href={link.href} className="text-sm text-gray-500 hover:text-sky-300 transition-colors duration-200">
                         {link.label}
                       </Link>
@@ -179,58 +174,45 @@ export default function Footer() {
       </div>
       </footer>
 
-      {downloadOpen && (
-        <div
-          className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 px-4 py-8"
-          onClick={() => setDownloadOpen(false)}
-        >
+      {setAlertPromptOpen && (
+        <div className="fixed inset-0 z-40 flex items-center justify-center px-4 py-6 sm:px-6">
           <div
-            className="relative w-full max-w-4xl overflow-hidden rounded-[2rem] border border-white/10 bg-gray-950 text-white shadow-2xl"
-            onClick={(event) => event.stopPropagation()}
-          >
-            <div className="absolute -top-24 right-[-4rem] h-56 w-56 rounded-full bg-sky-400/15 blur-3xl" />
-            <div className="absolute -bottom-24 left-[-4rem] h-56 w-56 rounded-full bg-blue-500/10 blur-3xl" />
-
-            <div className="relative flex items-start justify-between gap-4 border-b border-white/10 px-6 py-5 sm:px-8">
-              <div>
-                <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-bold uppercase tracking-widest text-amber-300 mb-3">
-                  <Smartphone size={12} />
-                  Download the HIcars app
-                </div>
-                <h3 className="text-2xl sm:text-3xl font-black text-white">Scan to install on Android or iPhone</h3>
-                <p className="mt-2 max-w-2xl text-sm sm:text-base text-gray-300">
-                  Use the QR codes below to get the HIcars app on your device and stay ready for ride alerts, bookings, and trip updates.
-                </p>
-              </div>
+            className="absolute inset-0 bg-black/70 backdrop-blur-sm"
+            onClick={() => setSetAlertPromptOpen(false)}
+          />
+          <div className="relative w-full max-w-sm sm:max-w-md lg:max-w-lg rounded-[2rem] bg-slate-950/95 border border-white/10 p-6 sm:p-8 shadow-[0_30px_80px_rgba(0,0,0,0.5)]">
+            <button
+              type="button"
+              onClick={() => setSetAlertPromptOpen(false)}
+              className="absolute right-4 top-4 p-2 rounded-full text-slate-300 hover:bg-white/10 transition-colors"
+            >
+              <X size={20} />
+            </button>
+            <h2 className="text-2xl sm:text-3xl font-black text-white mb-3">Log in to Set Alert</h2>
+            <p className="text-sm sm:text-base text-slate-300 mb-8 leading-relaxed">
+              You need a HIcars account to receive real-time ride notifications and updates.
+            </p>
+            <div className="space-y-3">
               <button
                 type="button"
-                onClick={() => setDownloadOpen(false)}
-                className="rounded-full border border-white/10 bg-white/5 p-2 text-gray-300 transition-colors hover:bg-white/10 hover:text-white"
-                aria-label="Close download popup"
+                onClick={() => openAuth('login')}
+                className="w-full rounded-2xl border border-transparent bg-sky-600 px-5 py-3.5 text-sm font-semibold text-white hover:bg-sky-700 transition-all duration-300"
               >
-                <X size={18} />
+                Login
               </button>
-            </div>
-
-            <div className="relative grid gap-4 p-6 sm:p-8 md:grid-cols-2">
-              <DownloadCard
-                title="Android"
-                description="Google Play download"
-                qrUrl={makeQrUrl('https://play.google.com/store/apps/details?id=com.hicars.app')}
-                storeLabel="Get it on Google Play"
-                storeHref="https://play.google.com/store/apps/details?id=com.hicars.app"
-              />
-              <DownloadCard
-                title="iPhone"
-                description="App Store download"
-                qrUrl={makeQrUrl('https://apps.apple.com/app/id0000000000')}
-                storeLabel="Download on the App Store"
-                storeHref="https://apps.apple.com/app/id0000000000"
-              />
+              <button
+                type="button"
+                onClick={() => openAuth('signup')}
+                className="w-full rounded-2xl border border-white/20 bg-white px-5 py-3.5 text-sm font-semibold text-slate-950 hover:bg-slate-100 transition-all duration-300"
+              >
+                Sign up
+              </button>
             </div>
           </div>
         </div>
       )}
+
+      <AuthModal isOpen={authOpen} mode={authMode} onClose={() => setAuthOpen(false)} />
     </>
   );
 }
@@ -241,22 +223,22 @@ function makeQrUrl(data: string) {
 
 function DownloadCard({ title, description, qrUrl, storeLabel, storeHref }: { title: string; description: string; qrUrl: string; storeLabel: string; storeHref: string; }) {
   return (
-    <div className="rounded-[1.75rem] border border-white/10 bg-white/5 p-5 sm:p-6 transition-transform duration-300 hover:-translate-y-1 hover:bg-white/10">
-      <div className="mb-4 flex items-center justify-between gap-3">
+    <div className="rounded-[1.5rem] border border-white/10 bg-white/5 p-4 sm:p-5 transition-transform duration-300 hover:-translate-y-1 hover:bg-white/10">
+      <div className="mb-3 flex items-center justify-between gap-3">
         <div>
-          <div className="text-lg font-black text-white">{title}</div>
-          <div className="text-sm text-gray-300">{description}</div>
+          <div className="text-base font-black text-white">{title}</div>
+          <div className="text-xs text-gray-300">{description}</div>
         </div>
-        <div className="rounded-2xl bg-sky-400/15 p-3 text-sky-300">
-          <Smartphone size={22} />
+        <div className="rounded-2xl bg-sky-400/15 p-2.5 text-sky-300">
+          <Smartphone size={20} />
         </div>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-[160px_1fr] sm:items-center">
-        <div className="mx-auto w-fit rounded-3xl bg-white p-3 shadow-lg">
-          <img src={qrUrl} alt={`${title} QR code`} className="h-36 w-36 rounded-2xl object-cover" />
+      <div className="grid gap-3 sm:grid-cols-[140px_1fr] sm:items-center">
+        <div className="mx-auto w-fit rounded-3xl bg-white p-2.5 shadow-lg">
+          <img src={qrUrl} alt={`${title} QR code`} className="h-28 w-28 rounded-2xl object-cover" />
         </div>
-        <div className="space-y-3 text-sm text-gray-300">
+        <div className="space-y-2 text-sm text-gray-300">
           <p>
             Open your camera or QR scanner and point it at this code to start the download flow on {title.toLowerCase()}.
           </p>

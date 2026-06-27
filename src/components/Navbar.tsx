@@ -11,20 +11,20 @@ export default function Navbar() {
   const [authMode, setAuthMode] = useState<'login' | 'signup'>('login');
 
   return (
-    <nav className="fixed top-0 left-0 right-0 z-50 bg-black shadow-md py-1.5 transition-all duration-300">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between">
+    <nav className="fixed top-0 left-0 right-0 z-50 bg-black shadow-md py-2 sm:py-1.5 transition-all duration-300">
+      <div className="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between gap-2">
           {/* Logo */}
           <Link href="/" className="flex items-center gap-2 group min-w-0">
             <img
               src="/logo4.png"
               alt="HIcars logo"
-              className="h-16 w-auto object-contain flex-shrink-0 transform scale-140"
+              className="h-12 w-auto object-contain flex-shrink-0 sm:h-16 sm:scale-140"
             />
           </Link>
 
           {/* Desktop Nav + Auth grouped to the right */}
-          <div className="hidden md:flex items-center gap-6">
+          <div className="hidden md:flex items-center gap-4">
             <div className="flex items-center gap-8">
               {[
                 { label: 'Find a Ride', path: '/find-a-ride' },
@@ -40,7 +40,7 @@ export default function Navbar() {
               ))}
             </div>
 
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2">
               <button
                 onClick={() => {
                   setAuthMode('login');
@@ -65,7 +65,7 @@ export default function Navbar() {
           {/* Mobile Menu Button */}
           <button
             onClick={() => setMenuOpen(!menuOpen)}
-            className="md:hidden p-2 rounded-lg text-white transition-colors"
+            className="md:hidden p-2 rounded-lg text-white transition-colors active:scale-95"
           >
             {menuOpen ? <X size={24} /> : <Menu size={24} />}
           </button>

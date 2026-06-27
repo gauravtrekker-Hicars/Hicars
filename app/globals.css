@@ -22,6 +22,38 @@
     color: #111827;
   }
 
+  /* Ensure the app root never causes horizontal overflow */
+  html,
+  body,
+  #__next {
+    width: 100%;
+    overflow-x: hidden;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE 10+ */
+  }
+
+  /* Hide native scrollbar on WebKit while keeping content scrollable */
+  html::-webkit-scrollbar,
+  body::-webkit-scrollbar,
+  #__next::-webkit-scrollbar,
+  *::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+    background: transparent;
+  }
+
+  /* Hide scrollbars for Firefox and IE/Edge */
+  * {
+    -ms-overflow-style: none; /* IE and Edge */
+    scrollbar-width: none; /* Firefox */
+  }
+
+  /* Ensure main content doesn't overflow horizontally */
+  main, section, #__next {
+    max-width: 100%;
+    overflow-x: hidden;
+  }
+
   img {
     display: block;
     max-width: 100%;

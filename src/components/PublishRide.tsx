@@ -50,8 +50,12 @@ export default function PublishRide() {
     if (!input) return;
 
     if (typeof input.showPicker === 'function') {
-      input.showPicker();
-      return;
+      try {
+        input.showPicker();
+        return;
+      } catch {
+        // Some browsers block showPicker() unless it is triggered by a direct user gesture.
+      }
     }
 
     input.focus();

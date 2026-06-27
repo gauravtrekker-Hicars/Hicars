@@ -15,7 +15,7 @@ export default function Home() {
   useSectionReveal(homeRef);
 
   return (
-    <main ref={homeRef}>
+    <main ref={homeRef} className="overflow-x-hidden">
       <div className="section-reveal">
         <Hero />
       </div>

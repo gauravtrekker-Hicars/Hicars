@@ -130,142 +130,145 @@ export default function SearchResults() {
         {/* Header */}
         <div className="section-reveal mb-8">
           <div className="bg-white rounded-3xl border border-gray-200 shadow-sm p-6 lg:p-8">
-            <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-6">
-              {/* Search Options */}
-              <div className="flex items-center gap-3 flex-1">
-                {/* From */}
-                {editingField === 'from' ? (
-                  <div className="flex items-center gap-2">
-                    <input
-                      type="text"
-                      value={editFrom}
-                      onChange={(e) => handleFieldChange('from', e.target.value)}
-                      autoFocus
-                      className="px-4 py-2 border border-blue-500 rounded-2xl focus:outline-none text-sm font-semibold"
-                    />
-                    <button
-                      onClick={() => setEditingField(null)}
-                      className="p-1.5 hover:bg-gray-100 rounded-full transition-colors"
-                    >
-                      <X size={16} className="text-gray-600" />
-                    </button>
-                  </div>
-                ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-[repeat(5,_minmax(0,1fr))] gap-3">
+              {/* From */}
+              {editingField === 'from' ? (
+                <div className="flex items-center gap-2 w-full">
+                  <input
+                    type="text"
+                    value={editFrom}
+                    onChange={(e) => handleFieldChange('from', e.target.value)}
+                    autoFocus
+                    className="w-full px-4 py-3 border border-blue-500 rounded-2xl focus:outline-none text-sm font-semibold"
+                    placeholder="Search city"
+                  />
                   <button
-                    onClick={() => {
-                      setEditFrom(from);
-                      setEditingField('from');
-                    }}
-                    className="flex items-center gap-2 px-4 py-2.5 bg-gray-50 hover:bg-gray-100 rounded-2xl transition-colors group flex-1 min-w-0"
+                    onClick={() => setEditingField(null)}
+                    className="p-2 hover:bg-gray-100 rounded-full transition-colors"
                   >
-                    <span className="text-xs text-gray-600 group-hover:text-gray-700">From</span>
-                    <span className="text-sm font-black text-gray-900 truncate">{from}</span>
+                    <X size={16} className="text-gray-600" />
                   </button>
-                )}
+                </div>
+              ) : (
+                <button
+                  onClick={() => {
+                    setEditFrom(from);
+                    setEditingField('from');
+                  }}
+                  className="flex flex-col items-start gap-1 p-4 bg-gray-50 hover:bg-gray-100 rounded-2xl transition-colors group min-w-0 w-full"
+                >
+                  <span className="text-xs text-gray-600 group-hover:text-gray-700">From</span>
+                  <span className="text-sm text-gray-900 truncate">{from || 'Select departure city'}</span>
+                </button>
+              )}
 
-                {/* To */}
-                {editingField === 'to' ? (
-                  <div className="flex items-center gap-2">
-                    <input
-                      type="text"
-                      value={editTo}
-                      onChange={(e) => handleFieldChange('to', e.target.value)}
-                      autoFocus
-                      className="px-4 py-2 border border-blue-500 rounded-2xl focus:outline-none text-sm font-semibold"
-                    />
-                    <button
-                      onClick={() => setEditingField(null)}
-                      className="p-1.5 hover:bg-gray-100 rounded-full transition-colors"
-                    >
-                      <X size={16} className="text-gray-600" />
-                    </button>
-                  </div>
-                ) : (
+              {/* To */}
+              {editingField === 'to' ? (
+                <div className="flex items-center gap-2 w-full">
+                  <input
+                    type="text"
+                    value={editTo}
+                    onChange={(e) => handleFieldChange('to', e.target.value)}
+                    autoFocus
+                    className="w-full px-4 py-3 border border-blue-500 rounded-2xl focus:outline-none text-sm font-semibold"
+                    placeholder="Search city"
+                  />
                   <button
-                    onClick={() => {
-                      setEditTo(to);
-                      setEditingField('to');
-                    }}
-                    className="flex items-center gap-2 px-4 py-2.5 bg-gray-50 hover:bg-gray-100 rounded-2xl transition-colors group flex-1 min-w-0"
+                    onClick={() => setEditingField(null)}
+                    className="p-2 hover:bg-gray-100 rounded-full transition-colors"
                   >
-                    <span className="text-xs text-gray-600 group-hover:text-gray-700">To</span>
-                    <span className="text-sm font-black text-gray-900 truncate">{to}</span>
+                    <X size={16} className="text-gray-600" />
                   </button>
-                )}
+                </div>
+              ) : (
+                <button
+                  onClick={() => {
+                    setEditTo(to);
+                    setEditingField('to');
+                  }}
+                  className="flex flex-col items-start gap-1 p-4 bg-gray-50 hover:bg-gray-100 rounded-2xl transition-colors group min-w-0 w-full"
+                >
+                  <span className="text-xs text-gray-600 group-hover:text-gray-700">To</span>
+                  <span className="text-sm text-gray-900 truncate">{to || 'Select destination city'}</span>
+                </button>
+              )}
 
-                {/* Date */}
-                {editingField === 'date' ? (
-                  <div className="flex items-center gap-2">
-                    <input
-                      type="date"
-                      value={editDate}
-                      onChange={(e) => handleFieldChange('date', e.target.value)}
-                      min={getTodayInputDate()}
-                      autoFocus
-                      className="w-full px-4 py-2 border border-blue-500 rounded-2xl focus:outline-none text-sm font-semibold cursor-pointer"
-                    />
-                    <button
-                      onClick={() => setEditingField(null)}
-                      className="p-1.5 hover:bg-gray-100 rounded-full transition-colors"
-                    >
-                      <X size={16} className="text-gray-600" />
-                    </button>
-                  </div>
-                ) : (
+              {/* Date */}
+              {editingField === 'date' ? (
+                <div className="flex items-center gap-2 w-full">
+                  <input
+                    type="date"
+                    value={editDate}
+                    onChange={(e) => handleFieldChange('date', e.target.value)}
+                    min={getTodayInputDate()}
+                    autoFocus
+                    className="w-full px-4 py-3 border border-blue-500 rounded-2xl focus:outline-none text-sm font-semibold cursor-pointer"
+                  />
                   <button
-                    onClick={() => {
-                      setEditDate(date);
-                      setEditingField('date');
-                    }}
-                    className="flex items-center gap-2 px-4 py-2.5 bg-gray-50 hover:bg-gray-100 rounded-2xl transition-colors group flex-1 min-w-0"
+                    onClick={() => setEditingField(null)}
+                    className="p-2 hover:bg-gray-100 rounded-full transition-colors"
                   >
+                    <X size={16} className="text-gray-600" />
+                  </button>
+                </div>
+              ) : (
+                <button
+                  onClick={() => {
+                    setEditDate(date);
+                    setEditingField('date');
+                  }}
+                  className="flex flex-col items-start gap-1 p-4 bg-gray-50 hover:bg-gray-100 rounded-2xl transition-colors group min-w-0 w-full"
+                >
+                  <div className="flex items-center gap-2">
                     <Calendar size={14} className="text-blue-600" />
                     <span className="text-xs text-gray-600 group-hover:text-gray-700">Date</span>
-                    <span className="text-sm font-black text-gray-900 truncate">{formatDate(date)}</span>
-                  </button>
-                )}
-
-                {/* Passengers */}
-                {editingField === 'seats' ? (
-                  <div className="flex items-center gap-2">
-                    <select
-                      value={editSeats}
-                      onChange={(e) => handleFieldChange('seats', e.target.value)}
-                      autoFocus
-                      className="px-4 py-2 border border-blue-500 rounded-2xl focus:outline-none text-sm font-semibold bg-white"
-                    >
-                      {[1, 2, 3, 4, 5, 6].map((num) => (
-                        <option key={num} value={num}>
-                          {num}
-                        </option>
-                      ))}
-                    </select>
-                    <button
-                      onClick={() => setEditingField(null)}
-                      className="p-1.5 hover:bg-gray-100 rounded-full transition-colors"
-                    >
-                      <X size={16} className="text-gray-600" />
-                    </button>
                   </div>
-                ) : (
-                  <button
-                    onClick={() => {
-                      setEditSeats(String(seats));
-                      setEditingField('seats');
-                    }}
-                    className="flex items-center gap-2 px-4 py-2.5 bg-gray-50 hover:bg-gray-100 rounded-2xl transition-colors group flex-1 min-w-0"
+                  <span className="text-sm text-gray-900 truncate">{date ? formatDate(date) : 'Select travel date'}</span>
+                </button>
+              )}
+
+              {/* Passengers */}
+              {editingField === 'seats' ? (
+                <div className="flex items-center gap-2 w-full">
+                  <select
+                    value={editSeats}
+                    onChange={(e) => handleFieldChange('seats', e.target.value)}
+                    autoFocus
+                    className="w-full px-4 py-3 border border-blue-500 rounded-2xl focus:outline-none text-sm font-semibold bg-white"
                   >
+                    {[1, 2, 3, 4, 5, 6].map((num) => (
+                      <option key={num} value={num}>
+                        {num}
+                      </option>
+                    ))}
+                  </select>
+                  <button
+                    onClick={() => setEditingField(null)}
+                    className="p-2 hover:bg-gray-100 rounded-full transition-colors"
+                  >
+                    <X size={16} className="text-gray-600" />
+                  </button>
+                </div>
+              ) : (
+                <button
+                  onClick={() => {
+                    setEditSeats(String(seats));
+                    setEditingField('seats');
+                  }}
+                  className="flex flex-col items-start gap-1 p-4 bg-gray-50 hover:bg-gray-100 rounded-2xl transition-colors group min-w-0 w-full"
+                >
+                  <div className="flex items-center gap-2">
                     <Users size={14} className="text-blue-600" />
                     <span className="text-xs text-gray-600 group-hover:text-gray-700">Passengers</span>
-                    <span className="text-sm font-black text-gray-900 truncate">{seats}</span>
-                  </button>
-                )}
-              </div>
+                  </div>
+                  <span className="text-sm text-gray-900 truncate">{seats} {seats === 1 ? 'passenger' : 'passengers'}</span>
+                </button>
+              )}
 
               {/* Show Rides Button */}
               <button
                 onClick={handleShowRides}
-                className="btn-blue px-8 py-3 text-white font-bold rounded-2xl whitespace-nowrap"
+                className="btn-blue px-6 py-4 text-white font-bold rounded-2xl whitespace-nowrap w-full xl:w-auto"
               >
                 Show Rides
               </button>

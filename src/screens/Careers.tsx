@@ -249,36 +249,37 @@ export default function Careers() {
       </div>
 
       {resumeOpen && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/70 px-4 py-8" onClick={closeResumePopup}>
-          <div className="relative w-full max-w-2xl overflow-hidden rounded-[2rem] border border-white/10 bg-gray-950 text-white shadow-2xl" onClick={(event) => event.stopPropagation()}>
-            <div className="absolute -top-24 right-[-4rem] h-56 w-56 rounded-full bg-amber-400/15 blur-3xl" />
-            <div className="absolute -bottom-24 left-[-4rem] h-56 w-56 rounded-full bg-blue-500/10 blur-3xl" />
+        <div className="fixed inset-0 z-[100] flex items-start justify-center overflow-y-auto bg-black/90 px-3 py-4 sm:items-center sm:px-6" onClick={closeResumePopup}>
+          <div className="relative w-full max-w-md overflow-hidden rounded-[2rem] border border-white/15 bg-slate-950 text-white shadow-2xl sm:max-w-2xl max-h-[calc(100vh-3rem)] flex min-h-0 flex-col" onClick={(event) => event.stopPropagation()}>
+            <div className="hidden md:block absolute -top-24 right-[-4rem] h-56 w-56 rounded-full bg-amber-400/15 blur-3xl" />
+            <div className="hidden md:block absolute -bottom-24 left-[-4rem] h-56 w-56 rounded-full bg-blue-500/10 blur-3xl" />
 
-            <div className="relative flex items-start justify-between gap-4 border-b border-white/10 px-6 py-5 sm:px-8">
+            <button
+              type="button"
+              onClick={closeResumePopup}
+              className="absolute top-3 right-3 z-20 rounded-full border border-white/10 bg-white/5 p-2 text-gray-300 transition-colors hover:bg-white/10 hover:text-white sm:top-4 sm:right-4"
+              aria-label="Close resume popup"
+            >
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <path d="M18 6 6 18" />
+                <path d="m6 6 12 12" />
+              </svg>
+            </button>
+
+            <div className="relative flex flex-col gap-3 border-b border-white/10 px-4 py-4 sm:px-6 sm:py-5">
               <div>
-                <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-bold uppercase tracking-widest text-amber-300 mb-3">
+                <div className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-amber-300 mb-2">
                   <FileUp size={12} />
                   Submit your resume
                 </div>
-                <h3 className="text-2xl sm:text-3xl font-black text-white">Tell us about yourself and attach your resume</h3>
-                <p className="mt-2 max-w-2xl text-sm sm:text-base text-gray-300">
+                <h3 className="text-lg sm:text-xl font-black text-white">Tell us about yourself and attach your resume</h3>
+                <p className="mt-2 text-sm text-gray-300">
                   Cannot see the role you are searching for? Share your details below and our HR team will review your profile for future opportunities.
                 </p>
               </div>
-              <button
-                type="button"
-                onClick={closeResumePopup}
-                className="rounded-full border border-white/10 bg-white/5 p-2 text-gray-300 transition-colors hover:bg-white/10 hover:text-white"
-                aria-label="Close resume popup"
-              >
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M18 6 6 18" />
-                  <path d="m6 6 12 12" />
-                </svg>
-              </button>
             </div>
 
-            <div className="relative p-6 sm:p-8">
+            <div className="overflow-y-auto flex-1 p-4 sm:p-5">
               {resumeSubmitted ? (
                 <div className="rounded-[1.5rem] border border-emerald-400/20 bg-emerald-400/10 p-6 text-center">
                   <p className="text-lg font-black text-white mb-2">Resume submitted</p>
@@ -290,7 +291,7 @@ export default function Careers() {
                   </button>
                 </div>
               ) : (
-                <form onSubmit={handleResumeSubmit} className="grid gap-4">
+                <form id="resume-form" onSubmit={handleResumeSubmit} className="grid gap-4">
                   <div className="grid gap-4 md:grid-cols-2">
                     <div>
                       <label htmlFor="resume-name" className="block text-sm font-semibold text-gray-200 mb-2">Name</label>
@@ -343,20 +344,25 @@ export default function Careers() {
                       placeholder="Share a brief note about the role or skills you are interested in."
                     />
                   </div>
-
-                  <div className="flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between pt-2">
-                    <p className="text-xs text-gray-400">Your details help our HR team review your profile for future openings.</p>
-                    <button
-                      type="submit"
-                      disabled={!isResumeFormComplete}
-                      className="btn-yellow px-6 py-3.5 text-gray-900 font-bold rounded-xl text-sm disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:transform-none"
-                    >
-                      Submit Resume
-                    </button>
-                  </div>
                 </form>
               )}
             </div>
+
+            {!resumeSubmitted && (
+              <div className="border-t border-white/10 bg-slate-950/95 p-4 sm:p-5">
+                <div className="flex flex-col sm:flex-row gap-3 sm:items-center sm:justify-between">
+                  <p className="text-xs text-gray-400">Your details help our HR team review your profile for future openings.</p>
+                  <button
+                    type="submit"
+                    form="resume-form"
+                    disabled={!isResumeFormComplete}
+                    className="btn-yellow px-6 py-3.5 text-gray-900 font-bold rounded-xl text-sm disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:transform-none"
+                  >
+                    Submit Resume
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       )}

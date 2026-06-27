@@ -11,7 +11,7 @@ const indianCities = [
   'Chandigarh', 'Indore', 'Vadodara', 'Visakhapatnam', 'Kochi',
   'Surat', 'Nagpur', 'Bhopal', 'Guwahati', 'Gurgaon',
   'Manali', 'Shimla', 'Mysuru', 'Cochin', 'Goa',
-  'Nainital', 'Udaipur', 'Jaipur', 'Pushkar', 'Varanasi',
+  'Nainital', 'Udaipur', 'Pushkar', 'Varanasi',
 ];
 
 interface CityInputProps {
@@ -58,7 +58,7 @@ function CityInput({ label, placeholder, value, onChange }: CityInputProps) {
   }, []);
 
   return (
-    <div ref={containerRef} className="relative flex-1">
+    <div ref={containerRef} className="relative flex-1 min-w-0">
       <label className="block text-xs font-semibold text-gray-700 mb-2">{label}</label>
       <input
         ref={inputRef}
@@ -67,7 +67,8 @@ function CityInput({ label, placeholder, value, onChange }: CityInputProps) {
         value={value}
         onChange={(e) => handleInputChange(e.target.value)}
         onFocus={() => value && setShowSuggestions(true)}
-        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:border-blue-500 focus:outline-none transition-colors text-sm"
+        className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:border-blue-500 focus:outline-none transition-colors text-sm text-gray-900 placeholder:text-gray-400"
+        aria-label={label}
       />
       {showSuggestions && suggestions.length > 0 && (
         <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-xl shadow-lg z-10 max-h-48 overflow-y-auto">
@@ -128,9 +129,14 @@ export default function RideSearch() {
       return;
     }
 
-    if (typeof input.showPicker === 'function') {
-      input.showPicker();
-      return;
+    try {
+      if (typeof input.showPicker === 'function') {
+        input.showPicker();
+        return;
+      }
+    } catch {
+      // Some browsers block showPicker() unless it is triggered by a direct user gesture.
+      // Fall back to focusing the input so the browser can still open the picker through normal interaction.
     }
 
     input.focus();
@@ -182,10 +188,10 @@ export default function RideSearch() {
         {/* Search Form */}
         <form
           onSubmit={handleSearch}
-          className="section-reveal bg-white rounded-3xl shadow-2xl p-6 md:p-8"
+          className="section-reveal bg-white rounded-3xl shadow-2xl p-4 sm:p-6 md:p-8"
           style={{ transitionDelay: '100ms' }}
         >
-          <div className="grid gap-4 md:gap-6">
+          <div className="grid gap-4 sm:gap-5 md:gap-6">
             {/* Row 1: From & To */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
               <div>
@@ -209,8 +215,8 @@ export default function RideSearch() {
             </div>
 
             {/* Row 2: Date & Seats */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6">
-              <div className="md:col-span-2">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 md:gap-6">
+              <div className="sm:col-span-2 md:col-span-2">
                 <label className="block text-xs font-semibold text-gray-700 mb-2">Date</label>
                 <div
                   className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm text-gray-800 transition-colors focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-500/20 cursor-pointer"
@@ -230,7 +236,7 @@ export default function RideSearch() {
                     value={date}
                     onChange={(e) => setDate(e.target.value)}
                     min={getTodayInputDate()}
-                    className="w-full bg-transparent outline-none text-sm text-gray-800 cursor-pointer"
+                    className="w-full min-w-0 bg-transparent outline-none text-sm text-gray-800 cursor-pointer"
                   />
                 </div>
                 {errors.date && <p className="text-xs text-red-500 mt-1">{errors.date}</p>}
@@ -240,7 +246,7 @@ export default function RideSearch() {
                 <select
                   value={seats}
                   onChange={(e) => setSeats(e.target.value)}
-                  className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:border-blue-500 focus:outline-none transition-colors text-sm bg-white"
+                  className="w-full min-w-0 px-4 py-3 border border-gray-300 rounded-xl focus:border-blue-500 focus:outline-none transition-colors text-sm bg-white"
                 >
                   {[1, 2, 3, 4, 5, 6].map((num) => (
                     <option key={num} value={num}>
@@ -254,7 +260,7 @@ export default function RideSearch() {
             {/* Search Button */}
             <button
               type="submit"
-              className="btn-blue col-span-full py-4 text-white font-bold text-lg rounded-2xl hover:shadow-lg transition-all duration-300"
+              className="btn-blue col-span-full w-full py-3.5 sm:py-4 text-white font-bold text-base sm:text-lg rounded-2xl hover:shadow-lg transition-all duration-300"
             >
               Search Rides
             </button>
