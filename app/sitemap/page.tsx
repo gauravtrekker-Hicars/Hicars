@@ -1,4 +1,4 @@
-import Sitemap from '../../src/pages/Sitemap';
+import Sitemap from '../../src/screens/Sitemap';
 
 export default function Page() {
   return <Sitemap />;

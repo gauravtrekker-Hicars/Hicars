@@ -1,4 +1,4 @@
-import AboutUs from '../../src/pages/AboutUs';
+import AboutUs from '../../src/screens/AboutUs';
 
 export default function Page() {
   return <AboutUs />;

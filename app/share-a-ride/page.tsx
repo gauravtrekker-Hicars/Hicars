@@ -1,4 +1,4 @@
-import ShareARide from '../../src/pages/ShareARide';
+import ShareARide from '../../src/screens/ShareARide';
 
 export default function Page() {
   return <ShareARide />;

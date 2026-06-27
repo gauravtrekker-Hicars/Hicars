@@ -1,4 +1,4 @@
-import FindARide from '../../src/pages/FindARide';
+import FindARide from '../../src/screens/FindARide';
 
 export default function Page() {
   return <FindARide />;

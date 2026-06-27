@@ -1,17 +1,30 @@
 import { useEffect, RefObject } from 'react';
 
-export function useSectionReveal(ref: RefObject<HTMLElement>) {
+export function useSectionReveal(ref: RefObject<HTMLElement | null>) {
   useEffect(() => {
-    const observer = new IntersectionObserver(
-      (entries) => entries.forEach((entry) => entry.target.classList.toggle('visible', entry.isIntersecting)),
-      { threshold: 0.1 }
-    );
+    if (typeof window === 'undefined') {
+      return undefined;
+    }
 
     const root = ref.current;
-    const elements = root ? [root, ...root.querySelectorAll<HTMLElement>('.section-reveal')] : [];
+    if (!root) {
+      return undefined;
+    }
 
-    elements.forEach((el) => observer.observe(el));
+    let observer: IntersectionObserver | undefined;
+    const timeoutId = window.setTimeout(() => {
+      observer = new IntersectionObserver(
+        (entries) => entries.forEach((entry) => entry.target.classList.toggle('visible', entry.isIntersecting)),
+        { threshold: 0.1 }
+      );
 
-    return () => observer.disconnect();
+      const elements = [root, ...Array.from(root.querySelectorAll<HTMLElement>('.section-reveal'))];
+      elements.forEach((el) => observer?.observe(el));
+    }, 150);
+
+    return () => {
+      window.clearTimeout(timeoutId);
+      observer?.disconnect();
+    };
   }, [ref]);
 }

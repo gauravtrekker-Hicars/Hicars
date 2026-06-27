@@ -1,4 +1,4 @@
-import TermsOfUse from '../../src/pages/TermsOfUse';
+import TermsOfUse from '../../src/screens/TermsOfUse';
 
 export default function Page() {
   return <TermsOfUse />;

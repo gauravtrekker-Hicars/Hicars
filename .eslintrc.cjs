@@ -1,7 +1,7 @@
 module.exports = {
   root: true,
   extends: ['next', 'next/core-web-vitals'],
-  plugins: ['react-hooks', 'react-refresh'],
+  plugins: ['react-hooks'],
   parserOptions: {
     ecmaVersion: 2020,
     sourceType: 'module',
@@ -15,7 +15,6 @@ module.exports = {
     },
   },
   rules: {
-    'react-refresh/only-export-components': 'off',
     '@next/next/no-img-element': 'off',
   },
   env: {
