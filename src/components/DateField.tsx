@@ -13,6 +13,7 @@ interface DateFieldProps {
   error?: string;
   wrapperClassName?: string;
   inputClassName?: string;
+  autoFocus?: boolean;
 }
 
 export default function DateField({
@@ -25,6 +26,7 @@ export default function DateField({
   error,
   wrapperClassName = '',
   inputClassName = '',
+  autoFocus = false,
 }: DateFieldProps) {
   const generatedId = useId();
   const fieldId = id || `date-field-${generatedId}`;
@@ -82,6 +84,7 @@ export default function DateField({
           onChange={(e) => onChange(e.target.value)}
           min={minDate || undefined}
           max={maxDate || undefined}
+          autoFocus={autoFocus}
           className={`w-full bg-transparent px-4 py-3 text-sm text-gray-900 outline-none cursor-pointer ${inputClassName}`}
         />
       </div>
