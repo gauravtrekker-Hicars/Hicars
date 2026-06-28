@@ -1,10 +1,10 @@
 "use client";
 
-import { useRef, useEffect, useState } from 'react';
+import { useEffect, useRef, useState, type FormEvent } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useSectionReveal } from '../hooks/useSectionReveal';
+import DateField from './DateField';
 import { getTodayInputDate } from '../lib/date';
-
 const indianCities = [
   'Delhi', 'Mumbai', 'Bangalore', 'Hyderabad', 'Pune',
   'Kolkata', 'Chennai', 'Ahmedabad', 'Jaipur', 'Lucknow',
@@ -89,13 +89,12 @@ function CityInput({ label, placeholder, value, onChange }: CityInputProps) {
 
 export default function RideSearch() {
   const ref = useRef<HTMLDivElement>(null);
-  const dateInputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
   const searchParams = useSearchParams();
   useSectionReveal(ref);
 
   useEffect(() => {
-    console.log('RideSearch mounted');
+    setDate(getTodayInputDate());
   }, []);
 
   const [fromCity, setFromCity] = useState('');
@@ -104,7 +103,7 @@ export default function RideSearch() {
   const [seats, setSeats] = useState('1');
   const [errors, setErrors] = useState<{ from?: string; to?: string; date?: string }>(() => ({}));
 
-  const handleSearch = (e: React.FormEvent) => {
+  const handleSearch = (e: FormEvent) => {
     e.preventDefault();
     const newErrors: { from?: string; to?: string; date?: string } = {};
     if (!fromCity) newErrors.from = 'Select departure city';
@@ -121,25 +120,6 @@ export default function RideSearch() {
       searchParams.set('seats', seats);
       router.push(`/search-rides?${searchParams.toString()}`);
     }
-  };
-
-  const openDatePicker = () => {
-    const input = dateInputRef.current;
-    if (!input) {
-      return;
-    }
-
-    try {
-      if (typeof input.showPicker === 'function') {
-        input.showPicker();
-        return;
-      }
-    } catch {
-      // Some browsers block showPicker() unless it is triggered by a direct user gesture.
-      // Fall back to focusing the input so the browser can still open the picker through normal interaction.
-    }
-
-    input.focus();
   };
 
   useEffect(() => {
@@ -216,33 +196,17 @@ export default function RideSearch() {
 
             {/* Row 2: Date & Seats */}
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:grid-cols-3 md:gap-6">
-              <div className="sm:col-span-2 md:col-span-2">
-                <label className="block text-xs font-semibold text-gray-700 mb-2">Date</label>
-                <div
-                  className="w-full rounded-xl border border-gray-300 bg-white px-4 py-3 text-sm text-gray-800 transition-colors focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-500/20 cursor-pointer"
-                  onClick={openDatePicker}
-                  role="button"
-                  tabIndex={0}
-                  onKeyDown={(event) => {
-                    if (event.key === 'Enter' || event.key === ' ') {
-                      event.preventDefault();
-                      openDatePicker();
-                    }
-                  }}
-                >
-                  <input
-                    ref={dateInputRef}
-                    type="date"
-                    value={date}
-                    onChange={(e) => setDate(e.target.value)}
-                    min={getTodayInputDate()}
-                    className="w-full min-w-0 bg-transparent outline-none text-sm text-gray-800 cursor-pointer"
-                  />
-                </div>
-                {errors.date && <p className="text-xs text-red-500 mt-1">{errors.date}</p>}
-              </div>
-              <div>
-                <label className="block text-xs font-semibold text-gray-700 mb-2">Seats</label>
+              <DateField
+                label="Date"
+                value={date}
+                onChange={setDate}
+                error={errors.date}
+                wrapperClassName="w-full min-w-0"
+                inputClassName="w-full min-w-0 bg-transparent outline-none text-sm text-gray-800 cursor-pointer"
+              />
+
+              <div className="w-full min-w-0">
+                <label className="block text-xs font-semibold text-gray-700 mb-2">Passengers</label>
                 <select
                   value={seats}
                   onChange={(e) => setSeats(e.target.value)}
@@ -250,7 +214,7 @@ export default function RideSearch() {
                 >
                   {[1, 2, 3, 4, 5, 6].map((num) => (
                     <option key={num} value={num}>
-                      {num} Seat{num > 1 ? 's' : ''}
+                      {num} passenger{num > 1 ? 's' : ''}
                     </option>
                   ))}
                 </select>

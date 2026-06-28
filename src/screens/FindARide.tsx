@@ -21,7 +21,7 @@ export default function FindARide() {
   };
 
   return (
-    <main ref={ref} className="min-h-screen bg-white">
+    <main ref={ref} className="section-reveal min-h-screen bg-white">
       <Suspense fallback={null}>
         <RideSearch />
       </Suspense>

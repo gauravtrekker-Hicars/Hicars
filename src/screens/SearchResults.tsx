@@ -6,6 +6,7 @@ import { MapPin, Calendar, Users, X } from 'lucide-react';
 import { useSectionReveal } from '../hooks/useSectionReveal';
 import { RideCard, getRidesBySearch } from '../components/RideCard';
 import FilterSidebar, { FilterState } from '../components/FilterSidebar';
+import DateField from '../components/DateField';
 import { getTodayInputDate } from '../lib/date';
 
 export default function SearchResults() {
@@ -16,7 +17,7 @@ export default function SearchResults() {
   const [editingField, setEditingField] = useState<string | null>(null);
   const [editFrom, setEditFrom] = useState(searchParams?.get('from') || '');
   const [editTo, setEditTo] = useState(searchParams?.get('to') || '');
-  const [editDate, setEditDate] = useState(searchParams?.get('date') || '');
+  const [editDate, setEditDate] = useState(searchParams?.get('date') || getTodayInputDate());
   const [editSeats, setEditSeats] = useState(searchParams?.get('seats') || '1');
 
   const [filters, setFilters] = useState<FilterState>({
@@ -116,12 +117,7 @@ export default function SearchResults() {
   const formatDate = (dateStr: string) => {
     if (!dateStr) return '';
     const [year, month, day] = dateStr.split('-');
-    return new Date(`${year}-${month}-${day}`).toLocaleDateString('en-IN', {
-      day: 'numeric',
-      month: 'short',
-      year: 'numeric',
-      weekday: 'short',
-    });
+    return `${Number(day)} ${new Date(`${year}-${month}-${day}`).toLocaleString('en-IN', { month: 'short' })}`;
   };
 
   return (
@@ -196,13 +192,13 @@ export default function SearchResults() {
               {/* Date */}
               {editingField === 'date' ? (
                 <div className="flex items-center gap-2 w-full">
-                  <input
-                    type="date"
+                  <DateField
+                    label="Date"
                     value={editDate}
-                    onChange={(e) => handleFieldChange('date', e.target.value)}
-                    min={getTodayInputDate()}
+                    onChange={(value) => handleFieldChange('date', value)}
+                    wrapperClassName="flex-1"
+                    inputClassName="w-full px-4 py-3 border border-blue-500 rounded-2xl focus:outline-none text-sm font-semibold cursor-pointer"
                     autoFocus
-                    className="w-full px-4 py-3 border border-blue-500 rounded-2xl focus:outline-none text-sm font-semibold cursor-pointer"
                   />
                   <button
                     onClick={() => setEditingField(null)}

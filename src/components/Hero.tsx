@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import AuthModal from './AuthModal';
+import DateField from './DateField';
 import { getTodayInputDate } from '../lib/date';
 
 const indianCities = [
@@ -10,8 +11,6 @@ const indianCities = [
   'Chandigarh', 'Indore', 'Vadodara', 'Visakhapatnam', 'Kochi', 'Surat', 'Nagpur', 'Bhopal', 'Guwahati', 'Gurgaon',
   'Manali', 'Shimla', 'Mysuru', 'Cochin', 'Goa', 'Nainital', 'Udaipur', 'Pushkar', 'Varanasi',
 ];
-
-const bannerImages = ['/Banner-image.jpg.png', '/Banner-image2.jpg.png', '/Banner-image3.jpg.png'];
 
 export default function Hero() {
   const router = useRouter();
@@ -27,11 +26,8 @@ export default function Hero() {
   const [errors, setErrors] = useState<{ from?: string; to?: string; date?: string }>({});
   const [authOpen, setAuthOpen] = useState(false);
   const [authMode, setAuthMode] = useState<'login' | 'signup'>('login');
-  const [activeBannerIndex, setActiveBannerIndex] = useState(0);
-
   const fromContainerRef = useRef<HTMLDivElement | null>(null);
   const toContainerRef = useRef<HTMLDivElement | null>(null);
-  const dateInputRef = useRef<HTMLInputElement | null>(null);
   const heroSearchRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -49,11 +45,7 @@ export default function Hero() {
   }, []);
 
   useEffect(() => {
-    const interval = window.setInterval(() => {
-      setActiveBannerIndex((current) => (current + 1) % bannerImages.length);
-    }, 15000);
-
-    return () => window.clearInterval(interval);
+    setDate(getTodayInputDate());
   }, []);
 
   const updateSuggestions = (value: string, setter: (items: string[]) => void) => {
@@ -75,22 +67,6 @@ export default function Hero() {
     setTo(value);
     updateSuggestions(value, setToSuggestions);
     setShowToSuggestions(Boolean(value.trim()));
-  };
-
-  const openDatePicker = () => {
-    const input = dateInputRef.current;
-    if (!input) return;
-
-    if (typeof input.showPicker === 'function') {
-      try {
-        input.showPicker();
-        return;
-      } catch {
-        // Some browsers block showPicker() unless it is triggered by a direct user gesture.
-      }
-    }
-
-    input.focus();
   };
 
   const handleCTAClick = () => {
@@ -157,9 +133,8 @@ export default function Hero() {
             <div className="relative rounded-[2rem] overflow-hidden shadow-[0_24px_90px_rgba(15,23,42,0.24)] h-72 sm:h-80 lg:h-96 w-full max-w-2xl border border-white/20 hero-shell">
               <div className="absolute inset-0 bg-gradient-to-br from-slate-950/20 via-slate-900/10 to-blue-500/20 z-10" />
               <img
-                key={bannerImages[activeBannerIndex]}
-                src={bannerImages[activeBannerIndex]}
-                alt={`Hero banner ${activeBannerIndex + 1}`}
+                src="/Banner-image.jpg.png"
+                alt="Hero banner"
                 className="absolute inset-0 w-full h-full object-cover hero-image active"
               />
             </div>
@@ -191,7 +166,7 @@ export default function Hero() {
           className="bg-white rounded-lg sm:rounded-2xl border-2 border-sky-500 p-4 sm:p-6 shadow-lg animate-fade-in"
           style={{ animationDelay: '350ms' }}
         >
-          <div className="flex flex-col sm:flex-col md:flex-row gap-3 sm:gap-4 items-end">
+          <div className="flex flex-col sm:flex-col md:flex-row gap-3 sm:gap-4 items-end min-w-0">
             <div className="w-full sm:flex-1 relative" ref={fromContainerRef}>
               <label className="block text-xs font-semibold text-gray-700 mb-2">From</label>
               <input
@@ -252,32 +227,17 @@ export default function Hero() {
               {errors.to && <p className="text-xs text-red-500 mt-1">{errors.to}</p>}
             </div>
 
-            <div
-              className="w-full sm:flex-1 relative"
-              role="button"
-              tabIndex={0}
-              onClick={openDatePicker}
-              onMouseDown={openDatePicker}
-              onKeyDown={(event) => {
-                if (event.key === 'Enter' || event.key === ' ') {
-                  event.preventDefault();
-                  openDatePicker();
-                }
-              }}
-            >
-              <label className="block text-xs font-semibold text-gray-700 mb-2">Date</label>
-              <input
-                ref={dateInputRef}
-                type="date"
-                value={date}
-                onChange={(e) => setDate(e.target.value)}
-                min={getTodayInputDate()}
-                className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg text-xs sm:text-sm text-gray-800 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all cursor-pointer"
-              />
-              {errors.date && <p className="text-xs text-red-500 mt-1">{errors.date}</p>}
-            </div>
+            <DateField
+              label="Date"
+              value={date}
+              onChange={setDate}
+              error={errors.date}
+              wrapperClassName="w-full sm:flex-1 min-w-0"
+              inputClassName="px-3 sm:px-4 py-2 sm:py-3 rounded-lg text-xs sm:text-sm text-gray-800"
+            />
 
-            <div className="w-full sm:flex-1 relative hidden md:block">
+
+            <div className="w-full sm:flex-1 relative">
               <label className="block text-xs font-semibold text-gray-700 mb-2">Passengers</label>
               <select
                 value={seats}

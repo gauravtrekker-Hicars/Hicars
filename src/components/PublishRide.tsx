@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { ArrowRight } from 'lucide-react';
 import { useSectionReveal } from '../hooks/useSectionReveal';
 import AuthModal from './AuthModal';
+import DateField from './DateField';
 import { getTodayInputDate } from '../lib/date';
 
 const indianCities = [
@@ -14,11 +15,10 @@ const indianCities = [
 
 export default function PublishRide() {
   const ref = useRef<HTMLElement>(null);
-  const dateInputRef = useRef<HTMLInputElement | null>(null);
   const [authOpen, setAuthOpen] = useState(false);
   const [from, setFrom] = useState('');
   const [to, setTo] = useState('');
-  const [date, setDate] = useState('');
+  const [date, setDate] = useState(getTodayInputDate());
   const [seats, setSeats] = useState('1');
   const [fromSuggestions, setFromSuggestions] = useState<string[]>([]);
   const [showFromSuggestions, setShowFromSuggestions] = useState(false);
@@ -44,22 +44,6 @@ export default function PublishRide() {
   }, []);
 
   useSectionReveal(ref);
-
-  const openDatePicker = () => {
-    const input = dateInputRef.current;
-    if (!input) return;
-
-    if (typeof input.showPicker === 'function') {
-      try {
-        input.showPicker();
-        return;
-      } catch {
-        // Some browsers block showPicker() unless it is triggered by a direct user gesture.
-      }
-    }
-
-    input.focus();
-  };
 
   const updateSuggestions = (value: string, setter: (items: string[]) => void) => {
     if (!value.trim()) {
@@ -171,36 +155,17 @@ export default function PublishRide() {
               {errors.to && <p className="text-xs text-red-500 mt-1">{errors.to}</p>}
             </div>
 
-            <div
-              role="button"
-              tabIndex={0}
-              onMouseDown={openDatePicker}
-              onClick={openDatePicker}
-              onKeyDown={(event) => {
-                if (event.key === 'Enter' || event.key === ' ') {
-                  event.preventDefault();
-                  openDatePicker();
-                }
-              }}
-              className="cursor-pointer"
-            >
-              <label htmlFor="publish-ride-date" className="block text-xs font-semibold text-gray-700 mb-2">
-                Date
-              </label>
-              <input
-                ref={dateInputRef}
-                id="publish-ride-date"
-                type="date"
-                value={date}
-                onChange={(e) => setDate(e.target.value)}
-                min={getTodayInputDate()}
-                className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:border-blue-500 focus:outline-none transition-colors text-sm cursor-pointer"
-              />
-              {errors.date && <p className="text-xs text-red-500 mt-1">{errors.date}</p>}
-            </div>
+            <DateField
+              label="Date"
+              value={date}
+              onChange={setDate}
+              error={errors.date}
+              wrapperClassName="cursor-pointer"
+              inputClassName="w-full px-4 py-3 border border-gray-300 rounded-xl focus:border-blue-500 focus:outline-none transition-colors text-sm cursor-pointer"
+            />
 
             <div>
-              <label className="block text-xs font-semibold text-gray-700 mb-2">Seats</label>
+              <label className="block text-xs font-semibold text-gray-700 mb-2">Passengers</label>
               <select
                 value={seats}
                 onChange={(e) => setSeats(e.target.value)}
@@ -208,7 +173,7 @@ export default function PublishRide() {
               >
                 {[1, 2, 3, 4, 5, 6].map((num) => (
                   <option key={num} value={num}>
-                    {num} Seat{num > 1 ? 's' : ''}
+                    {num} passenger{num > 1 ? 's' : ''}
                   </option>
                 ))}
               </select>
