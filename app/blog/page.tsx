@@ -27,7 +27,7 @@ export default function BlogPage() {
   }, []);
 
   return (
-    <main className="min-h-screen bg-white pt-24 pb-16 text-gray-900">
+    <main className="page-fade-in min-h-screen bg-white pt-24 pb-16 text-gray-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center mb-12">
           <span className="inline-block bg-sky-100 border border-sky-200 rounded-full px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-sky-700 mb-4">

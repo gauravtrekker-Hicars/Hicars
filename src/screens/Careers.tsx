@@ -121,7 +121,7 @@ export default function Careers() {
     Boolean(resumeForm.resumeFile);
 
   return (
-    <main ref={ref} className="min-h-screen bg-white pt-24 pb-16 text-gray-900">
+    <main ref={ref} className="section-reveal page-fade-in min-h-screen bg-white pt-24 pb-16 text-gray-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         <section className="section-reveal grid gap-8 lg:grid-cols-[1.05fr_0.95fr] items-center">
           <div className="space-y-6 animate-fade-in-up">

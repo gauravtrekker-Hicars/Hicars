@@ -29,6 +29,7 @@ export default function Hero() {
   const fromContainerRef = useRef<HTMLDivElement | null>(null);
   const toContainerRef = useRef<HTMLDivElement | null>(null);
   const heroSearchRef = useRef<HTMLDivElement | null>(null);
+  const heroRootRef = useRef<HTMLElement | null>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -46,6 +47,32 @@ export default function Hero() {
 
   useEffect(() => {
     setDate(getTodayInputDate());
+  }, []);
+
+  // Replay hero animations on demand (e.g., logo click) and on first mount for mobile
+  useEffect(() => {
+    const root = heroRootRef.current;
+    if (!root) return;
+
+    const replay = () => {
+      const els = Array.from(root.querySelectorAll<HTMLElement>('.animate-fade-in-up, .animate-fade-in, .animate-slide-in-left, .animate-slide-in-right'));
+      els.forEach((el) => {
+        const animClasses = Array.from(el.classList).filter((c) => c.startsWith('animate-'));
+        if (animClasses.length === 0) return;
+        animClasses.forEach((c) => el.classList.remove(c));
+        // force reflow
+        // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+        el.getBoundingClientRect();
+        animClasses.forEach((c) => el.classList.add(c));
+      });
+    };
+
+    // Play on mount (helps mobile when CSS may otherwise be suppressed)
+    replay();
+
+    const handler = () => replay();
+    document.addEventListener('play-hero-animation', handler as EventListener);
+    return () => document.removeEventListener('play-hero-animation', handler as EventListener);
   }, []);
 
   const updateSuggestions = (value: string, setter: (items: string[]) => void) => {
@@ -109,7 +136,7 @@ export default function Hero() {
   };
 
   return (
-    <section className="bg-white py-8 sm:py-12 lg:py-20 pt-24 sm:pt-28 lg:pt-32 overflow-hidden">
+    <section ref={heroRootRef} className="bg-white py-8 sm:py-12 lg:py-20 pt-24 sm:pt-28 lg:pt-32 overflow-hidden relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center mb-8 lg:mb-12">
           <div className="text-center lg:text-left">
@@ -168,7 +195,7 @@ export default function Hero() {
         >
           <div className="flex flex-col sm:flex-col md:flex-row gap-3 sm:gap-4 items-end min-w-0">
             <div className="w-full sm:flex-1 relative" ref={fromContainerRef}>
-              <label className="block text-xs font-semibold text-gray-700 mb-2">From</label>
+              <label className="block text-xs font-semibold text-blue-600 mb-2">From</label>
               <input
                 type="text"
                 placeholder="City, station, place"
@@ -198,7 +225,7 @@ export default function Hero() {
             </div>
 
             <div className="w-full sm:flex-1 relative" ref={toContainerRef}>
-              <label className="block text-xs font-semibold text-gray-700 mb-2">To</label>
+              <label className="block text-xs font-semibold text-blue-600 mb-2">To</label>
               <input
                 type="text"
                 placeholder="City, station, place"
@@ -238,7 +265,7 @@ export default function Hero() {
 
 
             <div className="w-full sm:flex-1 relative">
-              <label className="block text-xs font-semibold text-gray-700 mb-2">Passengers</label>
+              <label className="block text-xs font-semibold text-blue-600 mb-2">Passengers</label>
               <select
                 value={seats}
                 onChange={(e) => setSeats(e.target.value)}

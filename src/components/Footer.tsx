@@ -48,6 +48,7 @@ export default function Footer() {
     if (pathname === '/') {
       event.preventDefault();
       window.scrollTo({ top: 0, behavior: 'smooth' });
+      try { document.dispatchEvent(new CustomEvent('play-hero-animation')); } catch {}
     }
   };
 

@@ -115,48 +115,58 @@
 
 @layer utilities {
   .animate-fade-in-up {
-    animation: none;
+    animation: fadeInUp 0.7s cubic-bezier(.2,.9,.2,1) both;
   }
   .animate-fade-in {
-    animation: none;
+    animation: fadeIn 0.6s ease both;
   }
   .animate-slide-in-left {
-    animation: none;
+    animation: slideInLeft 0.65s cubic-bezier(.2,.9,.2,1) both;
   }
   .animate-slide-in-right {
-    animation: none;
+    animation: slideInRight 0.65s cubic-bezier(.2,.9,.2,1) both;
   }
   .animate-float {
-    animation: none;
+    animation: float 4s ease-in-out infinite;
   }
   .animate-pulse-yellow {
-    animation: none;
+    animation: pulseYellow 2.2s ease-in-out infinite;
   }
 }
 
 @media (hover: none) and (pointer: coarse) {
-  *, *::before, *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-
+  /* On mobile: keep light entrance animations, disable long-running ones */
   .animate-fade-in-up,
   .animate-fade-in,
   .animate-slide-in-left,
-  .animate-slide-in-right,
+  .animate-slide-in-right {
+    animation-duration: 0.6s !important;
+    animation-timing-function: cubic-bezier(.2,.9,.2,1) !important;
+    animation-fill-mode: both !important;
+  }
+
+  /* Disable float and pulsing animations on touch devices */
   .animate-float,
-  .hero-shell::before,
-  .hero-shell::after,
-  .hero-image.active,
-  .hero-image.inactive {
+  .animate-pulse-yellow {
     animation: none !important;
-    transition: none !important;
+  }
+
+  /* Keep hero entrance animation but reduce complexity */
+  .hero-image.active {
+    animation: heroSwipeIn 0.5s ease-out forwards !important;
   }
 
   .hero-image,
   .hero-shell {
-    will-change: auto;
+    will-change: transform, opacity;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* Respect user preference to reduce motion */
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
   }
 }
 
@@ -210,14 +220,67 @@
 
 .section-reveal {
   opacity: 0;
-  transform: translateY(24px);
-  transition: opacity 0.6s ease, transform 0.6s ease;
+  transform: translate3d(0, 18px, 0);
+  transition: opacity 0.38s ease-out, transform 0.38s ease-out;
   will-change: opacity, transform;
+  visibility: hidden;
 }
 
 .section-reveal.visible {
   opacity: 1;
-  transform: translateY(0);
+  transform: translate3d(0, 0, 0);
+  visibility: visible;
+}
+
+.page-fade-in {
+  opacity: 0;
+  transform: translate3d(0, 12px, 0);
+  animation: pageFadeIn 0.45s ease-out forwards;
+}
+
+@keyframes pageFadeIn {
+  from {
+    opacity: 0;
+    transform: translate3d(0, 12px, 0);
+  }
+  to {
+    opacity: 1;
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+.home-glow {
+  position: relative;
+  overflow: hidden;
+}
+
+.home-glow::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image: radial-gradient(circle at 20% 20%, rgba(56, 189, 248, 0.18), transparent 24%),
+    radial-gradient(circle at 80% 15%, rgba(59, 130, 246, 0.14), transparent 18%),
+    radial-gradient(circle at 50% 85%, rgba(59, 130, 246, 0.08), transparent 30%);
+  opacity: 0.85;
+  animation: homeGlowPulse 8s ease-in-out infinite alternate;
+}
+
+.home-glow > * {
+  position: relative;
+  z-index: 1;
+}
+
+@keyframes homeGlowPulse {
+  from {
+    opacity: 0.75;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0.92;
+    transform: scale(1.01);
+  }
 }
 
 .hero-overlay {
@@ -339,36 +402,40 @@
   width: 100%;
 }
 
-.section-reveal {
-  opacity: 0;
-  transform: none;
-  transition: none;
-}
-.section-reveal.visible {
-  opacity: 1;
-  transform: none;
-}
+/* section-reveal is defined earlier with transitions and should not be overridden here */
 
 .btn-blue {
   background: linear-gradient(135deg, #2563EB, #1D4ED8);
   transition: all 0.3s ease;
   box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
+  will-change: transform, box-shadow;
+  transform: translateZ(0);
 }
 .btn-blue:hover {
   background: linear-gradient(135deg, #1D4ED8, #1E40AF);
   box-shadow: 0 6px 20px rgba(37, 99, 235, 0.45);
   transform: translateY(-2px);
 }
+.btn-blue:active {
+  transform: translateY(0) scale(0.985);
+  box-shadow: 0 3px 12px rgba(37, 99, 235, 0.22);
+}
 
 .btn-yellow {
   background: linear-gradient(135deg, #FBBF24, #F59E0B);
   transition: all 0.3s ease;
   box-shadow: 0 4px 15px rgba(251, 191, 36, 0.35);
+  will-change: transform, box-shadow;
+  transform: translateZ(0);
 }
 .btn-yellow:hover {
   background: linear-gradient(135deg, #F59E0B, #D97706);
   box-shadow: 0 6px 20px rgba(251, 191, 36, 0.5);
   transform: translateY(-2px);
+}
+.btn-yellow:active {
+  transform: translateY(0) scale(0.985);
+  box-shadow: 0 3px 12px rgba(251, 191, 36, 0.25);
 }
 
 .gradient-text {
@@ -410,3 +477,4 @@
   0% { background-position: -200% 0; }
   100% { background-position: 200% 0; }
 }
+

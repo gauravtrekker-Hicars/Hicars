@@ -17,6 +17,8 @@ export default function Navbar() {
     if (pathname === '/') {
       event.preventDefault();
       window.scrollTo({ top: 0, behavior: 'smooth' });
+      // trigger hero animation replay on home
+      try { document.dispatchEvent(new CustomEvent('play-hero-animation')); } catch {}
     }
   };
 

@@ -59,7 +59,7 @@ function CityInput({ label, placeholder, value, onChange }: CityInputProps) {
 
   return (
     <div ref={containerRef} className="relative flex-1 min-w-0">
-      <label className="block text-xs font-semibold text-gray-700 mb-2">{label}</label>
+      <label className="block text-xs font-semibold text-blue-600 mb-2">{label}</label>
       <input
         ref={inputRef}
         type="text"
@@ -206,7 +206,7 @@ export default function RideSearch() {
               />
 
               <div className="w-full min-w-0">
-                <label className="block text-xs font-semibold text-gray-700 mb-2">Passengers</label>
+                <label className="block text-xs font-semibold text-blue-600 mb-2">Passengers</label>
                 <select
                   value={seats}
                   onChange={(e) => setSeats(e.target.value)}

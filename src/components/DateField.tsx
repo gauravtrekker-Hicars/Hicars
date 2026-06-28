@@ -65,7 +65,7 @@ export default function DateField({
 
   return (
     <div className={`min-w-0 ${wrapperClassName}`}>
-      <label htmlFor={fieldId} className="block text-xs font-semibold text-gray-700 mb-2">
+      <label htmlFor={fieldId} className="block text-xs font-semibold text-blue-600 mb-2">
         {label}
       </label>
       <div

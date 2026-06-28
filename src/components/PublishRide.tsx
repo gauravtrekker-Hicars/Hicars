@@ -96,7 +96,7 @@ export default function PublishRide() {
         <div className="mx-auto max-w-5xl section-reveal rounded-[2rem] bg-white p-6 sm:p-8 shadow-2xl border border-white/10">
           <div className="grid gap-4 md:grid-cols-2 md:gap-6">
             <div className="relative" ref={fromContainerRef}>
-              <label className="block text-xs font-semibold text-gray-700 mb-2">From</label>
+              <label className="block text-xs font-semibold text-blue-600 mb-2">From</label>
               <input
                 type="text"
                 placeholder="Departure city"
@@ -126,7 +126,7 @@ export default function PublishRide() {
             </div>
 
             <div className="relative" ref={toContainerRef}>
-              <label className="block text-xs font-semibold text-gray-700 mb-2">To</label>
+              <label className="block text-xs font-semibold text-blue-600 mb-2">To</label>
               <input
                 type="text"
                 placeholder="Destination city"
@@ -165,7 +165,7 @@ export default function PublishRide() {
             />
 
             <div>
-              <label className="block text-xs font-semibold text-gray-700 mb-2">Passengers</label>
+              <label className="block text-xs font-semibold text-blue-600 mb-2">Passengers</label>
               <select
                 value={seats}
                 onChange={(e) => setSeats(e.target.value)}

@@ -11,9 +11,30 @@ export function useSectionReveal(ref: RefObject<HTMLElement | null>) {
       return undefined;
     }
 
-    const elements = [root, ...Array.from(root.querySelectorAll<HTMLElement>('.section-reveal'))];
-    elements.forEach((el) => el.classList.add('visible'));
+    const revealElements = [root, ...Array.from(root.querySelectorAll<HTMLElement>('.section-reveal'))];
 
-    return undefined;
+    const observer = new IntersectionObserver(
+      (entries, observerInstance) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observerInstance.unobserve(entry.target);
+          }
+        });
+      },
+      {
+        root: null,
+        rootMargin: '0px 0px -20% 0px',
+        threshold: 0.12,
+      }
+    );
+
+    revealElements.forEach((element) => {
+      if (element instanceof HTMLElement) {
+        observer.observe(element);
+      }
+    });
+
+    return () => observer.disconnect();
   }, [ref]);
 }

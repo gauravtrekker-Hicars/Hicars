@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react';
 import { Star, MapPin, Users, Phone, MessageSquare } from 'lucide-react';
 
 export interface Ride {
@@ -158,9 +159,28 @@ interface RideCardProps {
 
 export function RideCard({ ride, selectedSeats }: RideCardProps) {
   const totalPrice = ride.pricePerSeat * selectedSeats;
+  const ref = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            el.classList.add('visible');
+            obs.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
 
   return (
-    <div className="section-reveal bg-white rounded-2xl border border-gray-200 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden">
+    <div ref={ref} className="section-reveal bg-white rounded-2xl border border-gray-200 shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden">
       <div className="p-4">
         {/* Driver Info */}
         <div className="flex items-center justify-between mb-5 pb-5 border-b border-gray-100">

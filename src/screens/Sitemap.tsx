@@ -55,7 +55,7 @@ export default function Sitemap() {
   useSectionReveal(ref);
 
   return (
-    <main ref={ref} className="min-h-screen bg-white pt-24 pb-16 text-gray-900">
+    <main ref={ref} className="section-reveal page-fade-in min-h-screen bg-white pt-24 pb-16 text-gray-900">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-12">
         <section className="section-reveal text-center space-y-6">
           <span className="inline-flex items-center gap-2 bg-sky-100 border border-sky-200 rounded-full px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-sky-700 mx-auto">
